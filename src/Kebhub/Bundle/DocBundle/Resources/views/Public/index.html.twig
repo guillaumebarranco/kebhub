@@ -1,0 +1,108 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}Kebhub - Add doc Article{% endblock %}
+
+
+
+{% block body %}
+
+<script type="text/javascript"></script>
+
+<section class="documentation">
+		
+	<div class="row">
+		<div class="col-sm-3">
+			<aside id="aside">
+				<h3 class="hidden-xs">Documentation</h3>
+
+
+
+<ul class="nav nav-pills nav-stacked">
+{% for chapitre in chapitres %}
+
+	<li>
+		<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+		  <div class="chapter">
+		    <div class="panel-heading" role="tab" id="headingOne">
+		      <h4 class="panel-title">
+		        <a data-toggle="collapse" data-parent="#accordion" href="{{ path('doc_index', {'slug' : chapitre.slug}) }}" aria-expanded="true" aria-controls="collapseOne">
+		          {{ chapitre.name }}
+		        </a>
+		      </h4>
+		    </div>
+		    <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+		      <div class="panel-body">
+		        <ol class="sub-chapter-list">
+		        	{% for article in chapitre.articles %}
+
+
+					<li><a class="scrollTo" href="{{ path('doc_index', {'slug' : chapitre.slug}) }}#{{ article.name|lower|slug }}">{{ article.name }}</a></li>
+					{% endfor %}
+				</ol>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+	</li>
+
+{% endfor %}
+</ul>
+
+<a href="#API" class="hidden-xs backtop scrollTo"><i class="fa fa-arrow-up"></i></a>
+			</aside>
+		</div>
+
+		<div class="container">
+		
+		
+		<div class="col-xs-12 col-md-9">
+
+			{% for chapitre in thischapitre %}
+
+				<h1 id="{{ chapitre.name }}"  style="padding-top:70px;margin-top:-70px;">{{ chapitre.name }}</h1>
+
+				{% for item in chapitre.articles %}
+
+					<div id="{{ item.name|lower|slug }}" style="padding-top:50px;margin-top:-50px;">
+						<h2>{{ item.name }}</h2>
+						<div>
+							{{ item.text|raw }}
+						</div>
+					</div>
+
+				{% endfor %}
+
+			{% endfor %}
+		</div>
+	</div>
+
+
+
+	</div>
+					
+	</section>
+
+<footer>
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-6">
+				<p>© Copyright 2015 - <a href="#">KEBHUB</a></p>
+			</div>
+			<!-- <div class="col-sm-6 text-right">
+				<ul class="list-unstyled list-inline">
+			 		<li><a href="">The app</a></li>
+			 		<li><a href="">Documentation</a></li>
+			 		<li><a href="">Credits</a></li>
+			 	</ul>
+			</div> -->
+	    </div>
+	</div>
+</footer>
+
+
+{% endblock %}
+
+
+{% block javascripts %}
+
+{% endblock %}

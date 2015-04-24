@@ -1,0 +1,45 @@
+.nav-tabs  {
+	background: none;
+}
+.nav-tabs li {
+	background-color: #009587;
+}
+.nav-tabs li.active {
+	background-color: black;
+}
+
+.form-control {
+	width: auto;
+}
+.navbar .navbar-nav>li>a {
+	-webkit-transition: 0.4s;
+}
+.navbar .navbar-nav>li>a:hover {
+	background-color: black;
+}
+.navbar .navbar-nav>li>a.active {
+	background-color: black;
+}
+
+.json {
+	background-color: white;
+	padding: 20px;
+	box-sizing: border-box;
+}
+
+.big {
+	margin-left: 20px;
+}
+
+.big div {
+	margin-left: 20px;
+}
+
+.style_input {
+	display: inline-block;
+}
+
+.url {
+	color: red;
+	font-size: 20px;
+}

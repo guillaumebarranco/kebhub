@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <service id="kebhub.get_twitter_api" class="Kebhub\Bundle\DashboardBundle\Services\TwitterApiService">
+        </service>
+
+        <service id="kebhub.get_instagram_api" class="Kebhub\Bundle\DashboardBundle\Services\InstagramApiService">
+            <argument>%instagramClientId%</argument>
+        </service>
+
+        <service id="kebhub.get_kebhub_api" class="Kebhub\Bundle\DashboardBundle\Services\KebhubApiService">
+        </service>
+
+        <service id="kebhub_post.repository.post"
+                 class="Kebhub\Bundle\DashboardBundle\Entity\PostRepository"
+                 factory-method="getRepository"
+                 factory-service="doctrine.orm.entity_manager">
+            <argument>KebhubDashboardBundle:Post</argument>
+        </service>
+        
+    </services>
+
+</container>

@@ -1,0 +1,288 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}Kebhub - API Test{% endblock %}
+
+{% block body %}
+
+	<div class="loader" style="display:none;position:absolute;width:100%;height:250px;margin:0 auto; text-align: center;">
+		<img src="{{ asset("img/loader.gif") }}" width="250" alt="" />
+	</div>
+
+	<h1>Test API</h1>	
+
+		<form action="#" class="getAccessToken" method="post">
+			<input type="hidden" class="client_id" value="{{ clientApi.id }}_{{ clientApi.randomId }}" />
+
+			<input type="hidden" class="secret_id" value="{{ clientApi.secret }}" />
+
+			<input type="hidden" class="api_key" value="{{ app.user.apiKey }}" />
+
+			<input type="submit" value="Get Access Token" />
+		</form>
+
+		<div class="token">
+			<p>
+				Access Token : <div class="the_token"></div>
+			</p>
+		</div>
+
+		<form action="#" class="getDatas" method="post">
+
+			<div class="form_section">
+
+				<h2>Type</h2>
+
+				<div class"style_input">
+					<label for="">Type</label>
+					<select name="type_choose" id="type_choose" class="type_choose">
+						<option value="twitter">Twitter</option>
+						<option value="instagram">Instagram</option>
+						<option value="all">All</option>
+					</select>
+
+				</div>
+
+			</div>
+
+			<div class="form_section">
+
+				<h2>Limit</h2>
+
+				<div class"style_input">
+					<label for="">Limit</label>
+					<input type="number" step="1" min="1" value="1" class="limit" />
+				</div>
+
+			</div>
+
+			<div class="form_section">
+
+				<h2>Fields</h2>
+
+				<div class="style_input">
+					<label for="">All</label>
+					<input type="checkbox" class="all" />
+				</div>
+
+				<div class="style_input">
+					<label for="">Text</label>
+					<input type="checkbox" class="text" />
+				</div>
+
+				<div class="style_input">
+					<label for="">Link</label>
+					<input type="checkbox" class="link" />
+				</div>
+
+				<div class="style_input">
+					<label for="">Type</label>
+					<input type="checkbox" class="type" />
+				</div>
+
+				<div class="style_input">
+					<label for="">Picture</label>
+					<input type="checkbox" class="picture" />
+				</div>
+
+				<div class="style_input">
+					<label for="">Date</label>
+					<input type="checkbox" class="date" />
+				</div>
+
+				<div class="style_input">
+					<label for="">Title</label>
+					<input type="checkbox" class="title" />
+				</div>
+
+			</div>
+
+			<input type="hidden" class="access_token" />
+			<input type="submit" value="Get Datas" />
+		</form>
+
+		<div class="url" style="font-size:11px;">
+			<a href="#" target="_blank">http://kebhub.com/api/get/<span class="url_type">twitter</span>/<span class="url_limit">3</span>/<span class="url_fields"></span>?access_token=<span class="the_token"></span></a>
+		</div>
+
+		<div class="json"></div>
+
+{% endblock %}
+
+
+{% block javascripts %}
+
+	<script>
+
+	$(document).ready(function() {
+
+		$('.getDatas').hide();
+		$('.url').hide();
+
+		var json;
+
+		// PAR AJAX
+
+		var api_key;
+		var client_id;
+		var secret_id;
+		var token;
+		var type_choose;
+		var limit;
+
+		$('form.getAccessToken').on('submit', function(e) {
+			e.preventDefault();
+
+			api_key = $('.api_key').val();
+			client_id = $('.client_id').val();
+			secret_id = $('.secret_id').val();
+
+			$('.getDatas').show();
+		});
+
+		$('form.getDatas').on('submit', function(e) {
+			e.preventDefault();
+
+			$('.json').empty();
+			type_choose = $('.type_choose').val();
+
+			if($('.limit').val() != undefined && $('.limit').val() != '' && $('.limit').val() != null) {
+				limit = $('.limit').val();
+			} else {
+				limit = 1;
+			}
+
+			getJsonDatas();
+				
+		});
+
+		$('form.getDatas input[type=checkbox]').on('change', function() {
+
+			if($(this).attr('class') == 'all') {
+
+				if($(this).is(':checked')) {
+					$('input[type=checkbox]').prop('checked', true);
+					$('input[type=checkbox]').attr('checked', 'checked');
+				} else {
+					$('input[type=checkbox]').prop('checked', false);
+				}
+
+			} else {
+				if($('input[type=checkbox].all').is(':checked')) {
+					$('input[type=checkbox].all').prop('checked', false);
+				}
+				
+			}
+
+		});
+
+
+
+		function getJsonDatas() {
+
+			$('.loader').show();
+
+			var the_datas = {
+				info : 'from_opengraph',
+				client_id: client_id,
+				secret_id: secret_id,
+				api_key: api_key,
+				type: type_choose,
+				limit: limit,
+				fields: 'all'
+			};
+
+			console.log(the_datas);
+
+			$.ajax({
+				type : "POST",
+				url : "{{ path('get_api_kebhub')}}",
+				dataType: 'json',
+				data : {
+					data : the_datas
+				},
+				success: function(response){
+					console.log(response);
+					json = response;
+
+					$('.url .url_type').text(type_choose);
+					$('.url .url_limit').text(limit);
+
+					token = json.access_token;
+
+					$('.the_token').text(token);
+					$('.access_token').val(token);
+
+					for (var i = 1; i <= limit; i++) {
+
+						console.log(json[i]);
+						console.log(type_choose);
+
+						if(json[i].type === type_choose || type_choose === 'all') {
+							var append = 
+								'<div class="big">' +
+									'<p>{</p>'+
+									'<div><b>id:</b> '+json[i].id+',</div>'
+							;
+
+							if($('form.getDatas').find('.all').is(':checked')) {
+
+								$('.url .url_fields').text('all');
+
+								append += '<div><b>text:</b> '+json[i].text+',</div>';
+								append += '<div><b>link:</b> '+json[i].link+',</div>';
+								append += '<div><b>type:</b> '+json[i].type+',</div>';
+								append += '<div><b>picture:</b> '+json[i].picture+',</div>';
+								append += '<div><b>date:</b> '+json[i].date+',</div>';
+								append += '<div><b>title:</b> '+json[i].title+',</div>';
+
+							} else {
+								if($('form.getDatas').find('.text').is(':checked')) {
+									append += '<div><b>text:</b> '+json[i].text+',</div>';
+								}
+								if($('form.getDatas').find('.link').is(':checked')) {
+									append += '<div><b>link:</b> '+json[i].link+',</div>';
+								}
+								if($('form.getDatas').find('.type').is(':checked')) {
+									append += '<div><b>type:</b> '+json[i].type+',</div>';
+								}
+								if($('form.getDatas').find('.picture').is(':checked')) {
+									append += '<div><b>picture:</b> '+json[i].picture+',</div>';
+								}
+								if($('form.getDatas').find('.date').is(':checked')) {
+									append += '<div><b>date:</b> '+json[i].date+',</div>';
+								}
+								if($('form.getDatas').find('.title').is(':checked')) {
+									append += '<div><b>title:</b> '+json[i].title+',</div>';
+								}
+							}
+							
+							append +=
+									'<p>}</p>'+
+								'</div>'
+							;
+
+							$('.json').append(append);
+						}
+					}
+
+					$('.url').show();
+					$('.url a').attr('href', $('.url').text());
+
+					if($('.json').text() == '') {
+						$('.json').text('No Datas');
+					}
+
+					$('.loader').hide();
+				},
+
+				error: function(){
+					console.log('error');
+	            }
+			});
+		}
+
+	})
+
+	</script>
+
+{% endblock %}

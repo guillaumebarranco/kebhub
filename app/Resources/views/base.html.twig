@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block title %}Kebhub - Homepage{% endblock %}</title>
+
+        <link rel="icon" href="{{ asset('img/favicon.ico') }}" />
+
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
+
+        <link href="{{ asset('css/prism.css') }}" type="text/css" rel="stylesheet" />
+        <link href="{{ asset('css/style.css') }}" type="text/css" rel="stylesheet" />
+
+        <link href="{{ asset('css/material-wfont.min.css') }}" type="text/css" rel="stylesheet" />
+        <link href="{{ asset('css/material.min.css') }}" type="text/css" rel="stylesheet" />
+        <link href="{{ asset('css/ripples.min.css') }}" type="text/css" rel="stylesheet" />
+        <link href="{{ asset('css/styles.css') }}" type="text/css" rel="stylesheet" />
+        <link href="{{ asset('css/sweet-alert.css') }}" type="text/css" rel="stylesheet" />
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+        {% block stylesheets %}{% endblock %}
+
+    </head>
+    <body id="body">
+
+        <div class="bs-component">
+            <div class="navbar navbar-fixed-top navbar-inverse">
+
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-inverse-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="{{ path('public_homepage') }}">Kebhub</a>
+                </div>
+
+                <div class="navbar-collapse collapse navbar-inverse-collapse">
+
+                    
+                    {% if app.user %}
+                        
+
+                        
+                        <ul class="nav navbar-nav navbar-right">
+
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <li>      
+                                    <a href="{{ path('admin_index') }}">
+                                        <i class="mdi-action-view-quilt"></i>
+                                        Admin Doc
+                                    </a>
+                                </li>
+                            {% endif %}
+                            <li>
+                                <a href="{{ path('doc_no_slug') }}">Doc</a>
+                            </li>
+                            <li>
+                                <a href="{{ path('api_example') }}">
+                                    <i class="mdi-action-account-box"></i>
+                                    API Example
+                                </a>
+                            </li>
+                            <li>      
+                                <a href="{{ path('dashboard_homepage') }}">
+                                    <i class="mdi-action-view-quilt"></i>
+                                    Dashboard
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="{{ path('dashboard_account') }}">
+                                    <i class="mdi-action-account-box"></i>
+                                    My account
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="{{ path('fos_user_security_logout') }}">
+                                    <i class="mdi-action-account-box"></i>
+                                    Log out
+                                </a>
+                            </li>
+                        </ul>
+
+
+                    {% else %}
+
+                        <ul class="nav navbar-nav navbar-right">
+                            <li>
+                                <a href="{{ path('doc_no_slug') }}">Doc</a>
+                            </li>
+                            <li>
+                                <a href="{{ path('fos_user_registration_register') }}">Create account</a>
+                            </li>
+                        </ul>
+
+                        <ul class="nav navbar-nav navbar-right">
+                            <li>
+                                <a href="{{ path('fos_user_security_login') }}">Log in</a>
+                            </li>
+                        </ul>
+                        
+
+                    {% endif %}
+
+                    
+                </div>
+                
+            </div>
+        </div>
+
+        {% block menu %}
+        {% endblock %}
+
+
+        {% block body %}
+        {% endblock %}
+
+
+        <script src="http://code.jquery.com/jquery.min.js"></script>
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+        <script src="{{ asset('js/main.min.js') }}"></script>
+        <script src="{{ asset('js/prism.min.js') }}"></script>
+        
+        <script src="{{ asset('js/ripples.min.js') }}"></script>
+        <script src="{{ asset('js/material.min.js') }}"></script>
+        <script>
+            $(document).ready(function() {
+                $.material.init();
+            });
+        </script>
+        {% block javascripts %}
+        {% endblock %}
+    </body>
+</html>

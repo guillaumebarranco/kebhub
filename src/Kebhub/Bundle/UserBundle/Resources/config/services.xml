@@ -1,0 +1,32 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+	<parameters>
+    	<parameter key="hip_mandrill.client.class">Mandrill</parameter>
+    	<parameter key="hip_mandrill.dispatcher.class">Hip\MandrillBundle\Dispatcher</parameter>
+    	<parameter key="hip_mandrill.fosuser.mailer.class">Kebhub\Bundle\UserBundle\Mailer\MandrillMailer</parameter>
+  	</parameters>
+
+    <services>
+
+	    <service id="kebhub_user.repository.user"
+	             class="Kebhub\Bundle\UserBundle\Entity\UserRepository"
+	             factory-method="getRepository"
+	             factory-service="doctrine.orm.entity_manager">
+	        <argument>KebhubUserBundle:User</argument>
+	    </service>
+	    
+	    <service id="hip_mandrill.fosuser.mailer" class="%hip_mandrill.fosuser.mailer.class%">
+	    	
+	    	<argument type="service" id="hip_mandrill.dispatcher" />
+	    	<argument type="service" id="router" />
+	    	<argument type="service" id="templating" />
+	    	
+	    </service>
+
+	</services>
+
+    
+</container>

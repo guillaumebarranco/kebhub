@@ -1,0 +1,78 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}Kebhub - Dashboard{% endblock %}
+{% block body %}
+	
+	<div class="col-xs-12" ng-app="kebhub" ng-controller="dashboardCtrl">
+		<div class="container">
+
+			<ul class="nav nav-pills nav-stacked col-xs-12 col-md-3">
+			    <li class="active" ng-click="changeCategory('recorded', $event)"><a href="#">Recorded</a></li>
+			    <li><a href="#" ng-click="changeCategory('twitter', $event)">Twitter</a></li>
+			    <li><a href="#" ng-click="changeCategory('instagram', $event)">Instagram</a></li>
+			</ul>
+
+			<div ng-show="loading">
+				<div class="loader" style="width:100%;height:250px;margin:0 auto; text-align: center;">
+					<img src="{{ asset("img/loader.gif") }}" width="250" alt="" />
+				</div>
+			</div>
+
+			<p ng-show="noPost">No posts founds</p>
+
+			<div class="col-xs-12 col-md-9 content-records" style="display: none;">
+				<div class="multiple-choise" ng-show="multipleItems.length > 0">
+					<a href="#" ng-click="deleteRecord('multiple')" ng-if="status == 'recorded'" class="btn btn-danger">Delete</a>
+					<a href="#" ng-click="addRecord($event, 'multiple')" ng-if="status == 'twitter' || status == 'instagram'" class="btn btn-success">Add</a>
+				</div>
+				
+				<div class="list-group">
+					<div class="clearfix" ng-repeat="(key, record) in recorded">
+					    <div class="list-group-item col-xs-12">
+					    	<div class="checkbox col-xs-1">
+			                    <label>
+			                        <input type="checkbox" ng-click="multiple($event, key)">
+			                    </label>
+			                </div>
+
+					    	<div class="row-picture col-xs-2" ng-if="record.picture">
+								<img class="circle" ng-src="{[{ record.picture }]}" alt="icon">
+							</div>
+					        <div class="row-action-primary col-xs-2" ng-if="record.picture == '' || !record.picture">
+					            <i class="mdi-file-folder"></i>
+					        </div>
+					        <div class="col-xs-9">
+					        	<div class="col-xs-9">
+						        	<p class="list-group-item-text" ng-if="record.title">{[{ record.title }]}</p>
+						            <p class="list-group-item-text" ng-id="record.text">{[{ record.text }]}</p>
+						            <p class="list-group-item-text"><a href="{[{ record.link }]}" target="_blank">{[{ record.link }]}</a></p>
+						        </div>
+
+					            <div class="least-content col-xs-3">
+					        		<a href="#" ng-click="deleteRecord(record.id)" ng-if="record.id" class="btn btn-danger">Delete</a>
+					        		<a href="#" ng-click="addRecord($event, key)" ng-if="!record.id" class="btn btn-success">Add</a>
+					        	</div>
+					        </div>
+
+					    </div>
+					    <div class="list-group-separator"></div>
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+	</div>
+
+	
+
+{% endblock %}
+
+{% block javascripts %}
+	<script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+	<script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.js"></script>
+	<script src="{{ asset('js/sweet-alert.min.js') }}"></script>
+    <script src="{{ asset('js/ngSweetAlert.min.js') }}"></script>
+	<script src="{{ asset("js/app.js") }}"></script>
+{% endblock %}

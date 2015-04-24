@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    
+    <services>
+        
+        <service id="kebhub.grant_type.api_key" class="Kebhub\Bundle\ApiBundle\OAuth\ApiKeyGrantExtension">
+            <tag name="fos_oauth_server.grant_extension" uri="http://kebhub.local/grants/api_key" />
+            <argument type="service" id="kebhub_user.repository.user"/>
+        </service>
+
+        <service id="kebhub.getpost" class="Kebhub\Bundle\ApiBundle\Services\PostService">
+            <argument type="service" id="kebhub_post.repository.post"/>
+            <argument type="service" id="security.context"/>
+        </service>
+
+    </services>
+
+</container>

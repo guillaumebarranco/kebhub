@@ -1,0 +1,123 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}Kebhub - Account{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="bs-docs-section">
+            <div class="bs-component">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <ul class="nav nav-tabs col-lg-4" style="margin-bottom: 15px;">
+                            <li class="active">
+                                <a href="#my-profile" data-toggle="tab">
+                                    My profile
+                                    <div class="ripple-wrapper"></div>
+                                </a>
+                            </li>
+
+                            <li class="">
+                                <a href="#my-api" data-toggle="tab">
+                                    My API
+                                    <div class="ripple-wrapper"></div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="myTabContent" class="tab-content">
+
+                    <div class="tab-pane fade active in" id="my-profile">
+                        <h2>Welcome to your profile ! You can see or updates your information here.</h2>
+                        <p>Username : {{ app.user.username }}</p>
+                        <p>Email : {{ app.user.email }}</p>
+
+                        <form name="form" method="post" action="">
+                            
+
+                                <div class="form-group">
+                                    <label for="inputEmail" class="col-lg-2 control-label">Twitter</label>
+                                    <div class="col-lg-10">
+                                        <!-- <input type="email" class="form-control" id="inputEmail" placeholder="Email"> -->
+                                        {{ form_errors(form.twitter_name) }}
+                                        {{ form_widget(form.twitter_name) }}
+                                    </div>
+                                </div>
+
+                                
+                            
+                                <div class="form-group">
+                                    <label for="inputEmail" class="col-lg-2 control-label">Instagram</label>
+                                    <div class="col-lg-10">
+                                        {{ form_errors(form.instagram_id) }}
+                                        {{ form_widget(form.instagram_id) }}
+                                    </div>
+                                </div>
+                            
+                            <div>
+                                <button type="submit" class="btn btn-primary" id="form_Update" name="form[Update]">Update <div class="ripple-wrapper"></div></button>
+                                {{ form_errors(form._token) }}
+                                {{ form_widget(form._token) }}
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="tab-pane fade " id="my-api">
+                        <h2>Here are your API datas you must use to get your saved datas.</h2>
+
+                        <div class="list-group">
+                            <div class="list-group-item">
+                                <div class="row-action-primary">
+                                    <i class="mdi-action-perm-identity"></i>
+                                </div>
+                                <div class="row-content">
+                                    
+                                    <h4 class="list-group-item-heading">Client_Id :</h4>
+                                    <p class="list-group-item-text">{{ clientApi.id }}_{{ clientApi.randomId }}</p>
+                                </div>
+                            </div>
+
+                            <div class="list-group-separator"></div>
+
+                            <div class="list-group-item">
+                                <div class="row-action-primary">
+                                    <i class="mdi-communication-vpn-key"></i>
+                                </div>
+                                <div class="row-content">
+                                    
+                                    <h4 class="list-group-item-heading">Secret_id :</h4>
+                                    <p class="list-group-item-text">{{ clientApi.secret }}</p>
+                                </div>
+                            </div>
+
+                            <div class="list-group-separator"></div>
+
+                            <div class="list-group-item">
+                                <div class="row-action-primary">
+                                    <i class="mdi-action-settings-ethernet"></i>
+                                </div>
+                                <div class="row-content">
+                                    
+                                    <h4 class="list-group-item-heading">Api_Key :</h4>
+                                    <p class="list-group-item-text">{{ app.user.apiKey }}</p>
+                                </div>
+                            </div>
+
+                            <div class="list-group-separator"></div>
+                            <p>
+                                Don't give these informations to anyone and keep them private !
+                            </p>
+                        </div>
+                        
+                    </div>
+                                        
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+
+    
+	
