@@ -1,7 +1,7 @@
 Kebhub
 ======
 
-Kebhub is a free Twitter and Instagram hub.
+Developped with Symfony2 and Angular, Kebhub is a free Twitter and Instagram hub.
 
   - Set your social network username 
   - Save your favorites posts
